@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+// App.js
+import React, { useState } from 'react';
+import SearchBar from './components/SearchBar.jsx';
+import DictionaryResults from './components/DictionaryResults.jsx';
+import { getDefinitions } from './services/dictionaryService';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 function App() {
+  const [results, setResults] = useState([]);
+
+  const handleSearch = async (term) => {
+    const definitions = await getDefinitions(term);
+    setResults(definitions);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Caleb's Dictionary App</h1>
+      <SearchBar onSearch={handleSearch} />
+      <DictionaryResults results={results} />
+      <ToastContainer />
     </div>
   );
 }
